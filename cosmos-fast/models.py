@@ -10,7 +10,7 @@ class ToDoItem(BaseModel):
     dueDate : date
 
 class UpdateItem(BaseModel):
-    id : str
+    id : Optional[str]
     title : Optional[str]
     description : Optional[str]
     dueDate : Optional[date]
