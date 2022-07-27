@@ -1,16 +1,9 @@
-from datetime import date
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 from typing import Optional
-from uuid import uuid4
 
 class ToDoItem(BaseModel):
-    id : str = Field(default_factory=uuid4)
-    title : str
+    id : str 
+    name : Optional[str]
     description : Optional[str]
-    dueDate : date
+    isComplete : Optional[bool]
 
-class UpdateItem(BaseModel):
-    id : Optional[str]
-    title : Optional[str]
-    description : Optional[str]
-    dueDate : Optional[date]
