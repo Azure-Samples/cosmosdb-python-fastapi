@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from dotenv import dotenv_values
-from azure.cosmos import CosmosClient, PartitionKey, exceptions
+from azure.cosmos.aio import CosmosClient
+from azure.cosmos import PartitionKey, exceptions
 from routes import router as todo_router
 
 config = dotenv_values(".env")
@@ -11,24 +12,28 @@ CONTAINER_NAME = "todo-items"
 app.include_router(todo_router, tags=["todos"], prefix="/todos")
 
 @app.on_event("startup")
-def startup_db_client():
+async def startup_db_client():
     app.cosmos_client = CosmosClient(config["URI"], credential = config["KEY"])
-    app.database = get_db(DATABASE_NAME)
-    app.todo_items_container = get_container(CONTAINER_NAME)
-    print("Database :", app.database)
-    print("Container :", app.todo_items_container)
+    await get_or_create_db(DATABASE_NAME)
+    await get_or_create_container(CONTAINER_NAME)
+    await app.cosmos_client.close()
 
-def get_db(db_name):
-    try:
-        return app.cosmos_client.create_database(db_name)
-    except exceptions.CosmosResourceExistsError:
-        return app.cosmos_client.get_database_client(db_name)
 
-def get_container(container_name):
+async def get_or_create_db(db_name):
     try:
-        return app.database.create_container(id=CONTAINER_NAME, partition_key=PartitionKey(path="/title"))
-    except exceptions.CosmosResourceExistsError:
-        return app.database.get_container_client(CONTAINER_NAME)
+        app.database  = app.cosmos_client.get_database_client(db_name)
+        return await app.database.read()
+    except exceptions.CosmosResourceNotFoundError:
+        print("Creating database")
+        return await app.cosmos_client.create_database(db_name)
+     
+async def get_or_create_container(container_name):
+    try:        
+        app.todo_items_container = app.database.get_container_client(container_name)
+        return await app.todo_items_container.read()   
+    except exceptions.CosmosResourceNotFoundError:
+        print("Creating container with id as partition key")
+        return await app.database.create_container(id=container_name, partition_key=PartitionKey(path="/id"))
     except exceptions.CosmosHttpResponseError:
         raise
 
