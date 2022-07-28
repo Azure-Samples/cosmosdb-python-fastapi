@@ -1,57 +1,51 @@
-# Project Name
+# Simple Python web backend with Cosmos DB and Fast API
 
-(short, 1-3 sentenced, description of the project)
+This python project creates a very simple three-tiered ToDo web app backend using Cosmos DB as the database and FastAPI as the python web framework to expose API endpoints for performing CRUD operations.
 
 ## Features
 
-This project framework provides the following features:
+This project demonstrates the use of the Cosmos DB python SDK with FastAPI . It covers the following aspects:
 
-* Feature 1
-* Feature 2
-* ...
+* Create Azure Cosmos DB Resource in Azure Portal 
+* Setup the dev environment and install requisite client-side libraries
+* Store Cosmos DB Resource connection credentials on our server 
+* Connect to Cosmos DB Resource through python client 
+* Define ToDoItem data model 
+* Create the required database and container to store ToDo Items 
+* Setup for API implementation 
+* Write functions to interact with the database 
+* Expose the API endpoints with FastAPI 
+* Test the endpoints 
 
 ## Getting Started
 
 ### Prerequisites
 
-(ideally very short, if any)
-
-- OS
-- Library version
-- ...
+- Python 3.6+
 
 ### Installation
 
-(ideally very short)
-
-- npm install [package name]
-- mvn install
-- ...
+Install the required libraries
+- pip install fastapi
+- pip install fastapi uvicorn
+- pip install python-dotenv
+- pip install azure-cosmos
 
 ### Quickstart
-(Add steps to get up and running quickly)
 
 1. git clone [repository clone url]
 2. cd [repository name]
-3. ...
 
 
 ## Demo
 
-A demo app is included to show how to use the project.
+Test out the API endpoints:
 
-To run the demo, follow these steps:
+1. cd [repository name]
+2. uvicorn main:app –reload
+3. In your browser, go to http://localhost:8000/docs 
 
-(Add steps to start up the demo)
-
-1.
-2.
-3.
 
 ## Resources
 
-(Any additional resources or related projects)
-
-- Link to supporting information
-- Link to similar sample
-- ...
+- Learn more about Azure Cosmos DB SQL API  - https://docs.microsoft.com/en-us/azure/cosmos-db/sql/
