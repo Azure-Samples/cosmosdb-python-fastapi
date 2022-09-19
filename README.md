@@ -29,6 +29,7 @@ Install the required libraries
 - pip install fastapi
 - pip install fastapi uvicorn
 - pip install python-dotenv
+- pip install aiohttp
 - pip install azure-cosmos
 
 ### Quickstart
